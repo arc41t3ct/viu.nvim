@@ -1,12 +1,18 @@
 local M = {}
 
+local report_start = vim.health.start or vim.health.report_start
+local check_executable = vim.fn.executable
+local report_ok = vim.health.ok or vim.health.report_ok
+local report_error = vim.health.error or vim.health.report_error
+local report_info = vim.health.info or vim.health.report_info
+
 M.check = function()
-  vim.health.report_start("viu.nvim health check")
-  if vim.fn.executable("viu") == 1 then
-    vim.health.report_ok("no issues found")
+  report_start("viu.nvim health check")
+  if check_executable("viu") == 1 then
+    report_ok("viu executable found")
   else
-    vim.health.report_error("viu executable not found")
-    vim.health.report_info("Can be installed with cargo: cargo install viu")
+    report_error("viu executable not found")
+    report_info("Can be installed with cargo: cargo install viu")
   end
 end
 
