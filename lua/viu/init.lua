@@ -34,7 +34,7 @@ local on_image_open = function()
   local buf_path = vim.api.nvim_buf_get_name(buf_id)
 
   local width, height, horizontal_padding, vertical_padding =
-    utils.calculate_ascii_width_height(buf_id, buf_path, global_opts)
+      utils.calculate_ascii_width_height(buf_id, buf_path, global_opts)
 
   options.set_options_before_render(buf_id)
   utils.buf_clear(buf_id)
@@ -51,9 +51,10 @@ function M.setup(user_opts)
   user_opts = user_opts or {}
   global_opts = vim.tbl_deep_extend("force", config.DEFAULT_OPTS, user_opts)
 
+  local image_group = vim.api.nvim_create_augroup("nonvim", { clear = false })
   vim.api.nvim_create_autocmd("BufRead", {
-    group = vim.api.nvim_create_augroup("ImageOpen", { clear = false }),
     pattern = config.SUPPORTED_FILE_PATTERNS,
+    group = image_group,
     callback = function()
       async.run(function()
         on_image_open()
